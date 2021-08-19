@@ -79,8 +79,8 @@ const androidTransformer = {
 }
 
 const jsonTransformer = {
-  transformComment:  function(comment) {
-    return ""
+  transformComment:  function() {
+    return null
   },
   transformKeyValue: function(key, value) {
     let normalizedValue = value.replace(/%newline%/gi, "\\n")

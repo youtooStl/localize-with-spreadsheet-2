@@ -7,9 +7,11 @@ const Gs2File = function(reader, writer) {
   this._writer = writer
 }
 
-Gs2File.fromGoogleSpreadsheet = function(spreadsheetKey, sheets) {
+Gs2File.fromGoogleSpreadsheet = async function(apiKey, spreadsheetKey, sheets) {
+  const reader = await GSReader.builder(apiKey, spreadsheetKey, sheets)
+
   return new Gs2File(
-    new GSReader(spreadsheetKey, sheets),
+    reader,
     new FileWriter()
   )
 }
@@ -61,6 +63,7 @@ Gs2File.prototype.save = async function(outputPath, opts) {
   }
 
   const lines = await this._reader.select(keyCol, valueCol)
+
   if (lines) {
     const transformer = Transformer[format || 'android']
     self._writer.write(outputPath, encoding, lines, transformer, opts)
